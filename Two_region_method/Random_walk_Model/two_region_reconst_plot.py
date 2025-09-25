@@ -7,8 +7,8 @@ from scipy.interpolate import interp1d, PchipInterpolator, CubicSpline
 import matplotlib.pyplot as plt
 
 # Define the double-well potential using two Gaussian functions
-def double_gaussian_potential(x, A1=3, mu1=-1, sigma1=0.5, A2=4, mu2=1, sigma2=0.6):
-# def double_gaussian_potential(x, A1=12, mu1=-1, sigma1=0.5, A2=10, mu2=1, sigma2=0.6):
+# def double_gaussian_potential(x, A1=3, mu1=-1, sigma1=0.5, A2=4, mu2=1, sigma2=0.6):
+def double_gaussian_potential(x, A1=12, mu1=-1, sigma1=0.5, A2=10, mu2=1, sigma2=0.6):
 # def double_gaussian_potential(x, A1=30, mu1=-1, sigma1=0.5, A2=25, mu2=1, sigma2=0.6):
     V1 = A1 * np.exp(-((x - mu1)**2) / (2 * sigma1**2))
     V2 = A2 * np.exp(-((x - mu2)**2) / (2 * sigma2**2))
