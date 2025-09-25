@@ -4,8 +4,6 @@ from scipy.sparse.linalg import spsolve
 from scipy.integrate import quad
 from scipy.interpolate import interp1d, PchipInterpolator, CubicSpline
 
-import matplotlib.pyplot as plt
-
 # Define the double-well potential using two Gaussian functions
 # def double_gaussian_potential(x, A1=3, mu1=-1, sigma1=0.5, A2=4, mu2=1, sigma2=0.6):
 # def double_gaussian_potential(x, A1=12, mu1=-1, sigma1=0.5, A2=10, mu2=1, sigma2=0.6):
@@ -23,17 +21,20 @@ x = np.linspace(-1.1, 1.1, 400)
 
 # plt.figure(figsize=(8, 6))
 plt.plot(x, beta_U(x), label='Potential Energy', color='black')
-plt.title('Double-Well Potential Energy', fontsize=16)
-plt.xticks(fontsize=14)
-plt.yticks(fontsize=14)
-plt.xlabel('$x$', fontsize=16)
-plt.ylabel(r'$\beta U(x)$', fontsize=16)
+# plt.title('Double-Well Potential Energy', fontsize=16, fontweight='bold')
+plt.xticks(fontsize=14, fontweight='bold')
+plt.yticks(fontsize=14, fontweight='bold')
+plt.xlabel('$x$', fontsize=20, fontweight='bold')
+plt.ylabel(r'$\beta U(x)$', fontsize=20, fontweight='bold')
 # plt.axhline(0, color='black',linewidth=0.5)
 # plt.axvline(1.1, color='red',linewidth=1)
 # plt.axvline(-1.1, color='red',linewidth=1)
-plt.scatter(-0.1, beta_U(-0.1), color='black')
-plt.legend()
+# plt.scatter(-0.1, beta_U(-0.1), color='black')
+# plt.grid(color = 'gray', linestyle = '--', linewidth = 0.5)
+# plt.legend()
+# plt.savefig("double_well_potential.png", dpi=600, bbox_inches='tight')  # high-quality PNG
 plt.show()
+
 
 a = -0.1    # location of reflecting boundary (will be used twice)
 b1 = -1.1  # location of lower absorbing boundary
