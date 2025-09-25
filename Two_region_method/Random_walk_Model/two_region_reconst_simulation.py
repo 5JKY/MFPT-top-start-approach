@@ -125,7 +125,7 @@ plt.ylabel(r"$\tau_{MFPT} (x)$")
 plt.title('MFPT vs. Position of Absorbing Boundary')
 plt.legend()
 plt.grid()
-plt.savefig('graphs/two_rgion_MFPT_simu.png', dpi=300)
+plt.savefig('graphs/two_region_MFPT_simu.png', dpi=300)
 plt.close()
 
 # %% [markdown]
