@@ -40,8 +40,8 @@ a = -0.1    # location of initial/injecting point
 b1 = -1.1  # location of lower absorbing boundary
 b2 = 1.1  # location of upper absorbing boundary
 h = 0.01
-N1 = int((a-b1)/h+1)
-N2 = int((b2-a)/h+1)
+N1 = round((a-b1)/h+1)
+N2 = round((b2-a)/h+1)
 x1_arr = np.linspace(b1, a, N1)
 x2_arr = np.linspace(a, b2, N2)
 
