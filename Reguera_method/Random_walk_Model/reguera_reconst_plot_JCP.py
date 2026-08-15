@@ -164,7 +164,7 @@ simu_beta_GrecM_arr2 = np.log(
 const_simu = beta_U(x2_arr)[2] - simu_beta_GrecM_arr2[2]
 
 # Preserved from your original code:
-simu_beta_GrecM_arr2 += const_trans
+simu_beta_GrecM_arr2 += const_simu
 
 # ============================================================
 # Figure 5: Free-energy reconstruction

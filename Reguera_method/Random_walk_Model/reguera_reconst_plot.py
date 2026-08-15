@@ -118,7 +118,7 @@ trans_beta_GrecM_arr2 += const_trans
 simu_beta_Grec2_arr2 = np.load("data/reguera_reconst_n2.npy")
 simu_beta_GrecM_arr2 = np.log((1-mfpt2_simu_arr/mfpt2_simu_arr[-1])/Pst_n2)
 const_simu = beta_U(x2_arr)[2] - simu_beta_GrecM_arr2[2]
-simu_beta_GrecM_arr2 += const_trans
+simu_beta_GrecM_arr2 += const_simu
 plt.plot(x2_arr[1:-1], beta_U(x2_arr[1:-1]), label="original", color="black")
 plt.plot(x2_arr[1:-1], trans_beta_Grec2_arr2, ':', label="TM-Reguera", color='darkorange')
 plt.plot(x2_arr, trans_beta_GrecM_arr2, '-.', label="TM-simplified", color='red')
