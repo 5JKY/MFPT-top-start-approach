@@ -10,30 +10,66 @@ from scipy.interpolate import interp1d, PchipInterpolator, CubicSpline
 # ============================================================
 mpl.rcParams.update({
     "font.family": "DejaVu Sans",
-    "font.size": 11,
-    "axes.labelsize": 16,
-    "xtick.labelsize": 11,
-    "ytick.labelsize": 11,
-    "legend.fontsize": 11,
-    "lines.linewidth": 1.8,
+    "font.size": 8.5,
+    "axes.labelsize": 10,
+    "xtick.labelsize": 8.5,
+    "ytick.labelsize": 8.5,
+    "legend.fontsize": 8,
+    "lines.linewidth": 1.4,
     "pdf.fonttype": 42,
     "ps.fonttype": 42,
 })
 
 
 def format_axes(ax):
-    """Apply consistent publication-style formatting."""
+    # Major and minor ticks on all four sides
+    ax.minorticks_on()
+
     ax.tick_params(
         axis="both",
-        which="both",
+        which="major",
         direction="in",
         top=True,
         right=True,
         length=5,
-        width=1
+        width=1.0
     )
+
+    ax.tick_params(
+        axis="both",
+        which="minor",
+        direction="in",
+        top=True,
+        right=True,
+        length=2.5,
+        width=0.8
+    )
+
     for spine in ax.spines.values():
         spine.set_linewidth(1.0)
+
+
+def add_legend(ax):
+    legend = ax.legend(
+        loc="best",
+        frameon=True,
+        framealpha=0.8,
+        fancybox=True
+    )
+    legend.get_frame().set_linewidth(0.8)
+    return legend
+
+
+def add_panel_label(ax, label):
+    ax.text(
+        0.03,
+        0.97,
+        label,
+        transform=ax.transAxes,
+        fontsize=10,
+        ha="left",
+        va="top"
+    )
 
 
 # ============================================================
@@ -67,7 +103,7 @@ def D(x):
 # ============================================================
 x = np.linspace(-1.1, 1.1, 400)
 
-fig, ax = plt.subplots(figsize=(6, 5), constrained_layout=True)
+fig, ax = plt.subplots(figsize=(3.3, 2.75), constrained_layout=True)
 
 ax.plot(
     x,
@@ -182,19 +218,19 @@ two_mfpt_n2 = np.load("data/two_region_mfpt_n2.npy")
 # ============================================================
 # Figure 2: Steady-state distribution
 # ============================================================
-fig, ax = plt.subplots(figsize=(6, 5), constrained_layout=True)
+fig, ax = plt.subplots(figsize=(3.3, 2.75), constrained_layout=True)
 
 ax.plot(
     x1_arr,
     ari1_trans.steady_state,
-    label="Transfer matrix A",
+    label="TM A",
     color="darkgreen"
 )
 
 ax.plot(
     x2_arr,
     ira2_trans.steady_state,
-    label="Transfer matrix B",
+    label="TM B",
     color="darkorange"
 )
 
@@ -205,7 +241,7 @@ ax.plot(
     label="RW A",
     color="red",
     marker="o",
-    markersize=4,
+    markersize=3.2,
     markevery=15
 )
 
@@ -216,7 +252,7 @@ ax.plot(
     label="RW B",
     color="blue",
     marker="o",
-    markersize=4,
+    markersize=3.2,
     markevery=15
 )
 
@@ -224,11 +260,8 @@ ax.set_xlabel(r"$x$")
 ax.set_ylabel(r"$P_{\mathrm{st}}(x)$")
 
 format_axes(ax)
-
-ax.legend(
-    loc="best",
-    frameon=False
-)
+add_legend(ax)
+add_panel_label(ax, "(a)")
 
 fig.savefig(
     "two_Pst.pdf",
@@ -248,19 +281,19 @@ valid_tm_B = ira2_trans.steady_state > 0
 valid_rw_A = two_Pst_n1 > 0
 valid_rw_B = two_Pst_n2 > 0
 
-fig, ax = plt.subplots(figsize=(6, 5), constrained_layout=True)
+fig, ax = plt.subplots(figsize=(3.3, 2.75), constrained_layout=True)
 
 ax.plot(
     x1_arr[valid_tm_A],
     -np.log(ari1_trans.steady_state[valid_tm_A]),
-    label="Transfer matrix A",
+    label="TM A",
     color="darkgreen"
 )
 
 ax.plot(
     x2_arr[valid_tm_B],
     -np.log(ira2_trans.steady_state[valid_tm_B]),
-    label="Transfer matrix B",
+    label="TM B",
     color="darkorange"
 )
 
@@ -271,7 +304,7 @@ ax.plot(
     label="RW A",
     color="red",
     marker="o",
-    markersize=4,
+    markersize=3.2,
     markevery=15
 )
 
@@ -282,7 +315,7 @@ ax.plot(
     label="RW B",
     color="blue",
     marker="o",
-    markersize=4,
+    markersize=3.2,
     markevery=15
 )
 
@@ -290,11 +323,8 @@ ax.set_xlabel(r"$x$")
 ax.set_ylabel(r"$-\ln[P_{\mathrm{st}}(x)]$")
 
 format_axes(ax)
-
-ax.legend(
-    loc="best",
-    frameon=False
-)
+add_legend(ax)
+add_panel_label(ax, "(b)")
 
 fig.savefig(
     "two_lnPst.pdf",
@@ -308,19 +338,19 @@ plt.close(fig)
 # ============================================================
 # Figure 4: Mean first-passage time
 # ============================================================
-fig, ax = plt.subplots(figsize=(6, 5), constrained_layout=True)
+fig, ax = plt.subplots(figsize=(3.3, 2.75), constrained_layout=True)
 
 ax.plot(
     x1_arr,
     trans_mfpt_n1,
-    label="MFPT matrix A",
+    label="TM A",
     color="darkgreen"
 )
 
 ax.plot(
     x2_arr,
     trans_mfpt_n2,
-    label="MFPT matrix B",
+    label="TM B",
     color="darkorange"
 )
 
@@ -331,7 +361,7 @@ ax.plot(
     label="RW A",
     color="red",
     marker="o",
-    markersize=4,
+    markersize=3.2,
     markevery=15
 )
 
@@ -342,7 +372,7 @@ ax.plot(
     label="RW B",
     color="blue",
     marker="o",
-    markersize=4,
+    markersize=3.2,
     markevery=15
 )
 
@@ -350,11 +380,8 @@ ax.set_xlabel(r"$x$")
 ax.set_ylabel(r"$\tau(x)$")
 
 format_axes(ax)
-
-ax.legend(
-    loc="best",
-    frameon=False
-)
+add_legend(ax)
+add_panel_label(ax, "(c)")
 
 fig.savefig(
     "two_MFPT.pdf",
@@ -399,7 +426,7 @@ two_reconst_n2 = np.load(
 # ============================================================
 # Figure 5: Two-region free-energy reconstruction
 # ============================================================
-fig, ax = plt.subplots(figsize=(6, 5), constrained_layout=True)
+fig, ax = plt.subplots(figsize=(3.3, 2.75), constrained_layout=True)
 
 x_full = np.arange(b1, b2, h)
 
@@ -415,10 +442,10 @@ ax.plot(
     x1_arr[1:-1],
     trans_reconst_n1,
     ":",
-    label="MFPT matrix A",
+    label="TM A",
     color="darkgreen",
     marker="^",
-    markersize=4,
+    markersize=3.2,
     markevery=20
 )
 
@@ -426,10 +453,10 @@ ax.plot(
     x2_arr[1:-1],
     trans_reconst_n2,
     ":",
-    label="MFPT matrix B",
+    label="TM B",
     color="darkorange",
     marker="^",
-    markersize=4,
+    markersize=3.2,
     markevery=20
 )
 
@@ -440,7 +467,7 @@ ax.plot(
     label="RW A",
     color="red",
     marker="o",
-    markersize=4,
+    markersize=3.2,
     markevery=15
 )
 
@@ -451,7 +478,7 @@ ax.plot(
     label="RW B",
     color="blue",
     marker="o",
-    markersize=4,
+    markersize=3.2,
     markevery=15
 )
 
@@ -459,11 +486,8 @@ ax.set_xlabel(r"$x$")
 ax.set_ylabel(r"$\beta U(x)$")
 
 format_axes(ax)
-
-ax.legend(
-    loc="best",
-    frameon=False
-)
+add_legend(ax)
+add_panel_label(ax, "(d)")
 
 fig.savefig(
     "two_reconst.pdf",
