@@ -10,22 +10,65 @@ from scipy.interpolate import interp1d, PchipInterpolator, CubicSpline
 # ============================================================
 mpl.rcParams.update({
     "font.family": "DejaVu Sans",
-    "font.size": 11,
-    "axes.labelsize": 16,
-    "xtick.labelsize": 11,
-    "ytick.labelsize": 11,
-    "legend.fontsize": 11,
-    "lines.linewidth": 1.8,
+    "font.size": 8.5,
+    "axes.labelsize": 10,
+    "xtick.labelsize": 8.5,
+    "ytick.labelsize": 8.5,
+    "legend.fontsize": 8,
+    "lines.linewidth": 1.4,
     "pdf.fonttype": 42,
     "ps.fonttype": 42,
 })
 
 def format_axes(ax):
-    ax.tick_params(axis="both", which="both",
-                   direction="in", top=True, right=True,
-                   length=5, width=1)
+    ax.minorticks_on()
+
+    ax.tick_params(
+        axis="both",
+        which="major",
+        direction="in",
+        top=True,
+        right=True,
+        length=5,
+        width=1.0
+    )
+
+    ax.tick_params(
+        axis="both",
+        which="minor",
+        direction="in",
+        top=True,
+        right=True,
+        length=2.5,
+        width=0.8
+    )
+
     for spine in ax.spines.values():
         spine.set_linewidth(1.0)
+
+
+def add_legend(ax):
+    legend = ax.legend(
+        loc="best",
+        frameon=True,
+        framealpha=0.8,
+        fancybox=True
+    )
+    legend.get_frame().set_linewidth(0.8)
+    return legend
+
+
+def add_panel_label(ax, label):
+    ax.text(
+        0.03,
+        0.97,
+        label,
+        transform=ax.transAxes,
+        fontsize=10,
+        ha="left",
+        va="top"
+    )
+
 
 # ============================================================
 # Medium-barrier double-well potential
@@ -47,7 +90,7 @@ def D(x):
 # ============================================================
 x = np.linspace(-1.1, 1.1, 400)
 
-fig, ax = plt.subplots(figsize=(6, 5), constrained_layout=True)
+fig, ax = plt.subplots(figsize=(3.3, 2.75), constrained_layout=True)
 ax.plot(x, beta_U(x), color="black", linewidth=2.0)
 ax.set_xlabel(r"$x$")
 ax.set_ylabel(r"$\beta U(x)$")
@@ -85,16 +128,26 @@ delt_t = h**2/(2*D0)
 # ============================================================
 Pst_n2 = np.load("data/reguera_Pst_n2.npy")
 
-fig, ax = plt.subplots(figsize=(6, 5), constrained_layout=True)
+fig, ax = plt.subplots(figsize=(3.3, 2.75), constrained_layout=True)
 ax.plot(x2_arr, ira2_trans.steady_state,
-        label="Transfer matrix", color="darkorange")
+        label="TM", color="darkorange")
 ax.plot(n2_arr, Pst_n2, "--",
         label="RW", color="blue",
-        marker="o", markersize=4, markevery=15)
+        marker="o", markersize=3.2, markevery=15)
 ax.set_xlabel(r"$x$")
 ax.set_ylabel(r"$P_{\mathrm{st}}(x)$")
 format_axes(ax)
-ax.legend(loc="best", frameon=False)
+add_legend(ax)
+# add_panel_label(ax, "(a)")
+ax.text(
+    0.03,
+    0.03,
+    "(a)",
+    transform=ax.transAxes,
+    fontsize=10,
+    ha="left",
+    va="bottom"
+)
 fig.savefig("reguera_Pst.pdf", bbox_inches="tight")
 plt.show()
 plt.close(fig)
@@ -105,18 +158,19 @@ plt.close(fig)
 valid_tm = ira2_trans.steady_state > 0
 valid_rw = Pst_n2 > 0
 
-fig, ax = plt.subplots(figsize=(6, 5), constrained_layout=True)
+fig, ax = plt.subplots(figsize=(3.3, 2.75), constrained_layout=True)
 ax.plot(x2_arr[valid_tm],
         -np.log(ira2_trans.steady_state[valid_tm]),
-        label="Transfer matrix", color="darkorange")
+        label="TM", color="darkorange")
 ax.plot(n2_arr[valid_rw],
         -np.log(Pst_n2[valid_rw]),
         "--", label="RW", color="blue",
-        marker="o", markersize=4, markevery=15)
+        marker="o", markersize=3.2, markevery=15)
 ax.set_xlabel(r"$x$")
 ax.set_ylabel(r"$-\ln[P_{\mathrm{st}}(x)]$")
 format_axes(ax)
-ax.legend(loc="best", frameon=False)
+add_legend(ax)
+add_panel_label(ax, "(b)")
 fig.savefig("reguera_lnPst.pdf", bbox_inches="tight")
 plt.show()
 plt.close(fig)
@@ -126,16 +180,17 @@ plt.close(fig)
 # ============================================================
 mfpt2_simu_arr = np.load("data/reguera_mfpt_n2.npy")
 
-fig, ax = plt.subplots(figsize=(6, 5), constrained_layout=True)
+fig, ax = plt.subplots(figsize=(3.3, 2.75), constrained_layout=True)
 ax.plot(x2_arr, delt_t*m2_bar[0],
-        label="Transfer matrix", color="darkorange")
+        label="TM", color="darkorange")
 ax.plot(n2_arr, mfpt2_simu_arr, "--",
         label="RW", color="blue",
-        marker="o", markersize=4, markevery=15)
+        marker="o", markersize=3.2, markevery=15)
 ax.set_xlabel(r"$x$")
 ax.set_ylabel(r"$\tau(x)$")
 format_axes(ax)
-ax.legend(loc="best", frameon=False)
+add_legend(ax)
+add_panel_label(ax, "(c)")
 fig.savefig("reguera_MFPT.pdf", bbox_inches="tight")
 plt.show()
 plt.close(fig)
@@ -169,7 +224,7 @@ simu_beta_GrecM_arr2 += const_simu
 # ============================================================
 # Figure 5: Free-energy reconstruction
 # ============================================================
-fig, ax = plt.subplots(figsize=(6, 5), constrained_layout=True)
+fig, ax = plt.subplots(figsize=(3.3, 2.75), constrained_layout=True)
 
 ax.plot(x2_arr[1:-1], beta_U(x2_arr[1:-1]),
         label="Original", color="black", linewidth=2.0)
@@ -182,7 +237,7 @@ ax.plot(x2_arr, trans_beta_GrecM_arr2, "-.",
 
 ax.plot(n2_arr[1:-1], simu_beta_Grec2_arr2, "--",
         label="RW-Reguera", color="blue",
-        marker="o", markersize=4, markevery=15)
+        marker="o", markersize=3.2, markevery=15)
 
 ax.plot(n2_arr, simu_beta_GrecM_arr2, "--",
         label="RW-simplified")
@@ -190,7 +245,8 @@ ax.plot(n2_arr, simu_beta_GrecM_arr2, "--",
 ax.set_xlabel(r"$x$")
 ax.set_ylabel(r"$\beta U(x)$")
 format_axes(ax)
-ax.legend(loc="best", frameon=False)
+add_legend(ax)
+add_panel_label(ax, "(d)")
 
 fig.savefig("reguera_reconst.pdf", bbox_inches="tight")
 plt.show()
