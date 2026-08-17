@@ -20,8 +20,13 @@ mpl.rcParams.update({
 
 def finish_axes():
     ax = plt.gca()
-    ax.tick_params(axis="both", which="both", direction="in",
-                   top=True, right=True, length=5, width=1)
+    ax.minorticks_on()
+
+    ax.tick_params(axis="both", which="major", direction="in",
+                   top=True, right=True, length=5, width=1.0)
+    ax.tick_params(axis="both", which="minor", direction="in",
+                   top=True, right=True, length=2.5, width=0.8)
+
     for spine in ax.spines.values():
         spine.set_linewidth(1.0)
 
@@ -121,7 +126,7 @@ plt.ylabel(r"$P_{\mathrm{st}}(x)$")
 # plt.legend(fontsize=13)
 # Add legend here (after plotting, before saving/showing)
 finish_axes()
-legend = add_legend(loc="upper right")
+legend = add_legend(loc="best")
 add_panel_label("(a)")
 plt.tight_layout()
 plt.savefig("two_Pst.pdf", bbox_inches="tight")  # high-quality PNG
@@ -145,7 +150,7 @@ plt.ylabel(r"$-\ln[P_{\mathrm{st}}(x)]$")
 # plt.legend(fontsize=12)
 # Add legend here (after plotting, before saving/showing)
 finish_axes()
-legend = add_legend(loc="upper center")
+legend = add_legend(loc="best")
 add_panel_label("(b)")
 plt.tight_layout()
 plt.savefig("two_lnPst.pdf", bbox_inches="tight")  # high-quality PNG
@@ -167,7 +172,7 @@ plt.ylabel(r"$\tau(x)$")
 # plt.legend(fontsize=12)
 # Add legend here (after plotting, before saving/showing)
 finish_axes()
-legend = add_legend(loc="upper center")
+legend = add_legend(loc="best")
 add_panel_label("(c)")
 plt.tight_layout()
 plt.savefig("two_MFPT.pdf", bbox_inches="tight")  # high-quality PNG
