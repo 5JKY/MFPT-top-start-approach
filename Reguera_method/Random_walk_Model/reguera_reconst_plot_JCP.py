@@ -8,12 +8,12 @@ import matplotlib as mpl
 
 mpl.rcParams.update({
     "font.family": "DejaVu Sans",
-    "font.size": 11,
-    "axes.labelsize": 16,
-    "xtick.labelsize": 11,
-    "ytick.labelsize": 11,
-    "legend.fontsize": 11,
-    "lines.linewidth": 1.8,
+    "font.size": 8.5,
+    "axes.labelsize": 10,
+    "xtick.labelsize": 8.5,
+    "ytick.labelsize": 8.5,
+    "legend.fontsize": 8,
+    "lines.linewidth": 1.4,
     "pdf.fonttype": 42,
     "ps.fonttype": 42,
 })
@@ -24,17 +24,56 @@ mpl.rcParams.update({
 # ============================================================
 
 def format_axes(ax):
+    # Minor ticks help readers estimate intermediate values
+    ax.minorticks_on()
+
+    # Major ticks
     ax.tick_params(
         axis="both",
+        which="major",
         direction="in",
         top=True,
         right=True,
         length=5,
-        width=1
+        width=1.0
+    )
+
+    # Minor ticks
+    ax.tick_params(
+        axis="both",
+        which="minor",
+        direction="in",
+        top=True,
+        right=True,
+        length=2.5,
+        width=0.8
     )
 
     for spine in ax.spines.values():
-        spine.set_linewidth(1)
+        spine.set_linewidth(1.0)
+
+
+def add_legend(ax):
+    legend = ax.legend(
+        loc="best",
+        frameon=True,
+        framealpha=0.8,
+        fancybox=True
+    )
+    legend.get_frame().set_linewidth(0.8)
+    return legend
+
+
+def add_panel_label(ax, label):
+    ax.text(
+        0.03,
+        0.97,
+        label,
+        transform=ax.transAxes,
+        fontsize=10,
+        ha="left",
+        va="top"
+    )
 
 
 # ============================================================
@@ -77,7 +116,7 @@ def D(x):
 x = np.linspace(-1.1, 1.1, 400)
 
 fig, ax = plt.subplots(
-    figsize=(6, 5),
+    figsize=(3.3, 2.75),
     constrained_layout=True
 )
 
@@ -170,14 +209,14 @@ mfpt2_simu_arr = np.load(
 # ============================================================
 
 fig, ax = plt.subplots(
-    figsize=(6, 5),
+    figsize=(3.3, 2.75),
     constrained_layout=True
 )
 
 ax.plot(
     x2_arr,
     ira2_trans.steady_state,
-    label="Transfer matrix",
+    label="TM",
     color="darkorange"
 )
 
@@ -188,7 +227,7 @@ ax.plot(
     label="RW",
     color="blue",
     marker="o",
-    markersize=4,
+    markersize=3.2,
     markevery=15
 )
 
@@ -196,10 +235,15 @@ ax.set_xlabel(r"$x$")
 ax.set_ylabel(r"$P_{\mathrm{st}}(x)$")
 
 format_axes(ax)
-
-ax.legend(
-    loc="best",
-    frameon=False
+add_legend(ax)
+ax.text(
+    0.03,
+    0.03,
+    "(a)",
+    transform=ax.transAxes,
+    fontsize=10,
+    ha="left",
+    va="bottom"
 )
 
 plt.savefig(
@@ -219,14 +263,14 @@ valid_TM = ira2_trans.steady_state > 0
 valid_RW = Pst_n2 > 0
 
 fig, ax = plt.subplots(
-    figsize=(6, 5),
+    figsize=(3.3, 2.75),
     constrained_layout=True
 )
 
 ax.plot(
     x2_arr[valid_TM],
     -np.log(ira2_trans.steady_state[valid_TM]),
-    label="Transfer matrix",
+    label="TM",
     color="darkorange"
 )
 
@@ -237,7 +281,7 @@ ax.plot(
     label="RW",
     color="blue",
     marker="o",
-    markersize=4,
+    markersize=3.2,
     markevery=15
 )
 
@@ -245,11 +289,8 @@ ax.set_xlabel(r"$x$")
 ax.set_ylabel(r"$-\ln[P_{\mathrm{st}}(x)]$")
 
 format_axes(ax)
-
-ax.legend(
-    loc="best",
-    frameon=False
-)
+add_legend(ax)
+add_panel_label(ax, "(b)")
 
 plt.savefig(
     "reguera_lnPst.pdf",
@@ -264,14 +305,14 @@ plt.show()
 # ============================================================
 
 fig, ax = plt.subplots(
-    figsize=(6, 5),
+    figsize=(3.3, 2.75),
     constrained_layout=True
 )
 
 ax.plot(
     x2_arr,
     delt_t * m2_bar[0],
-    label="Transfer matrix",
+    label="TM",
     color="darkorange"
 )
 
@@ -282,7 +323,7 @@ ax.plot(
     label="RW",
     color="blue",
     marker="o",
-    markersize=4,
+    markersize=3.2,
     markevery=15
 )
 
@@ -290,11 +331,8 @@ ax.set_xlabel(r"$x$")
 ax.set_ylabel(r"$\tau(x)$")
 
 format_axes(ax)
-
-ax.legend(
-    loc="best",
-    frameon=False
-)
+add_legend(ax)
+add_panel_label(ax, "(c)")
 
 plt.savefig(
     "reguera_MFPT.pdf",
@@ -352,7 +390,7 @@ simu_beta_GrecM_arr2 += const_simu
 # ============================================================
 
 fig, ax = plt.subplots(
-    figsize=(6, 5),
+    figsize=(3.3, 2.75),
     constrained_layout=True
 )
 
@@ -387,7 +425,7 @@ ax.plot(
     label="RW-Reguera",
     color="blue",
     marker="o",
-    markersize=4,
+    markersize=3.2,
     markevery=15
 )
 
@@ -402,11 +440,8 @@ ax.set_xlabel(r"$x$")
 ax.set_ylabel(r"$\beta U(x)$")
 
 format_axes(ax)
-
-ax.legend(
-    loc="best",
-    frameon=False
-)
+add_legend(ax)
+add_panel_label(ax, "(d)")
 
 plt.savefig(
     "reguera_reconst.pdf",
