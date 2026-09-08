@@ -8,12 +8,12 @@ import matplotlib as mpl
 
 mpl.rcParams.update({
     "font.family": "DejaVu Sans",
-    "font.size": 8.5,
-    "axes.labelsize": 10,
-    "xtick.labelsize": 8.5,
-    "ytick.labelsize": 8.5,
-    "legend.fontsize": 8,
-    "lines.linewidth": 1.4,
+    "font.size": 16,
+    "axes.labelsize": 18,
+    "xtick.labelsize": 16,
+    "ytick.labelsize": 16,
+    "legend.fontsize": 14,
+    "lines.linewidth": 1.8,
     "pdf.fonttype": 42,
     "ps.fonttype": 42,
 })
@@ -58,7 +58,8 @@ def add_legend(ax):
         loc="best",
         frameon=True,
         framealpha=0.8,
-        fancybox=True
+        fancybox=True,
+        fontsize=12
     )
     legend.get_frame().set_linewidth(0.8)
     return legend
@@ -70,7 +71,7 @@ def add_panel_label(ax, label):
         0.97,
         label,
         transform=ax.transAxes,
-        fontsize=10,
+        fontsize=16,
         ha="left",
         va="top"
     )
@@ -227,7 +228,7 @@ ax.plot(
     label="RW",
     color="blue",
     marker="o",
-    markersize=3.2,
+    markersize=4.5,
     markevery=15
 )
 
@@ -241,7 +242,7 @@ ax.text(
     0.03,
     "(a)",
     transform=ax.transAxes,
-    fontsize=10,
+    fontsize=16,
     ha="left",
     va="bottom"
 )
@@ -281,7 +282,7 @@ ax.plot(
     label="RW",
     color="blue",
     marker="o",
-    markersize=3.2,
+    markersize=4.5,
     markevery=15
 )
 
@@ -323,7 +324,7 @@ ax.plot(
     label="RW",
     color="blue",
     marker="o",
-    markersize=3.2,
+    markersize=4.5,
     markevery=15
 )
 
@@ -406,35 +407,35 @@ ax.plot(
     x2_arr[1:-1],
     trans_beta_Grec2_arr2,
     ":",
-    label="TM-Reguera",
+    label="TM",
     color="darkorange"
 )
 
-ax.plot(
-    x2_arr[1:-1],
-    trans_beta_GrecM_arr2[1:-1],
-    "-.",
-    label="TM-simplified",
-    color="red"
-)
+# ax.plot(
+#     x2_arr[1:-1],
+#     trans_beta_GrecM_arr2[1:-1],
+#     "-.",
+#     label="TM-simplified",
+#     color="red"
+# )
 
 ax.plot(
     n2_arr[1:-1],
     simu_beta_Grec2_arr2,
     "--",
-    label="RW-Reguera",
+    label="RW",
     color="blue",
     marker="o",
-    markersize=3.2,
+    markersize=4.5,
     markevery=15
 )
 
-ax.plot(
-    n2_arr[1:-1],
-    simu_beta_GrecM_arr2[1:-1],
-    "--",
-    label="RW-simplified"
-)
+# ax.plot(
+#     n2_arr[1:-1],
+#     simu_beta_GrecM_arr2[1:-1],
+#     "--",
+#     label="RW-simplified"
+# )
 
 ax.set_xlabel(r"$x$")
 ax.set_ylabel(r"$\beta U(x)$")
