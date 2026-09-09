@@ -49,8 +49,8 @@ def add_panel_label(ax, label, position="upper-left"):
     ax.text(x, y, label, transform=ax.transAxes,
             fontsize=18, ha=ha, va=va)
 
-def double_gaussian_potential(x, A1=12, mu1=-1, sigma1=0.5,
-                              A2=10, mu2=1, sigma2=0.6):
+def double_gaussian_potential(x, A1=30, mu1=-1, sigma1=0.5,
+                              A2=25, mu2=1, sigma2=0.6):
     V1 = A1 * np.exp(-((x - mu1)**2) / (2 * sigma1**2))
     V2 = A2 * np.exp(-((x - mu2)**2) / (2 * sigma2**2))
     return -(V1 + V2)
@@ -77,84 +77,85 @@ from mfpt_matrix_calc import mfpt_matrix_stable_ira
 m2_bar = mfpt_matrix_stable_ira(ira2_trans)
 delt_t = h**2 / (2 * D0)
 
-Pst_n2 = np.load("data/reguera_Pst_n2.npy")
-mfpt2_simu_arr = np.load("data/reguera_mfpt_n2.npy")
+# Pst_n2 = np.load("data/reguera_Pst_n2.npy")
+# mfpt2_simu_arr = np.load("data/reguera_mfpt_n2.npy")
 
 # (a) Pst
 fig, ax = plt.subplots(figsize=(3.3, 2.75), constrained_layout=True)
 ax.plot(x2_arr, ira2_trans.steady_state, label="TM", color="darkorange")
 # ax.plot(n2_arr, Pst_n2, "--", label="RW", color="blue",
 #         marker="o", markersize=5.0, markevery=15)
-ax.plot(
-    n2_arr, Pst_n2,
-    label="RW",
-    color="blue",
-    linestyle='--',
-    linewidth=1.6,
-    marker="o",
-    markersize=4.5,
-    markevery=15
-)
+# ax.plot(
+#     n2_arr, Pst_n2,
+#     label="RW",
+#     color="blue",
+#     linestyle='--',
+#     linewidth=1.6,
+#     marker="o",
+#     markersize=4.5,
+#     markevery=15
+# )
 ax.set_xlabel(r"$x$")
 ax.set_ylabel(r"$P_{\mathrm{st}}(x)$")
 format_axes(ax)
 add_legend(ax)
 add_panel_label(ax, "(e)", position="lower-left")
-fig.savefig("reguera_Pst.pdf", bbox_inches="tight")
+fig.savefig("reguera_Pst_high.pdf", bbox_inches="tight")
 plt.show()
 plt.close(fig)
 
 # (b) -ln Pst
 valid_TM = ira2_trans.steady_state > 0
-valid_RW = Pst_n2 > 0
+# valid_RW = Pst_n2 > 0
 fig, ax = plt.subplots(figsize=(3.3, 2.75), constrained_layout=True)
 ax.plot(x2_arr[valid_TM], -np.log(ira2_trans.steady_state[valid_TM]),
         label="TM", color="darkorange")
 # ax.plot(n2_arr[valid_RW], -np.log(Pst_n2[valid_RW]), "--",
 #         label="RW", color="blue", marker="o", markersize=5.0, markevery=15)
-ax.plot(
-    n2_arr[valid_RW], -np.log(Pst_n2[valid_RW]),
-    label="RW",
-    color="blue",
-    linestyle='--',
-    linewidth=1.6,
-    marker="o",
-    markersize=4.5,
-    markevery=15
-)
+# ax.plot(
+#     n2_arr[valid_RW], -np.log(Pst_n2[valid_RW]),
+#     label="RW",
+#     color="blue",
+#     linestyle='--',
+#     linewidth=1.6,
+#     marker="o",
+#     markersize=4.5,
+#     markevery=15
+# )
 ax.set_xlabel(r"$x$")
 ax.set_ylabel(r"$-\ln[P_{\mathrm{st}}(x)]$")
 format_axes(ax)
 add_legend(ax)
 add_panel_label(ax, "(f)")
-fig.savefig("reguera_lnPst.pdf", bbox_inches="tight")
+fig.savefig("reguera_lnPst_high.pdf", bbox_inches="tight")
 plt.show()
 plt.close(fig)
 
 # (c) MFPT
 fig, ax = plt.subplots(figsize=(3.3, 2.75), constrained_layout=True)
-ax.plot(x2_arr, delt_t * m2_bar[0] / 1e4, label="TM", color="darkorange")
+ax.plot(x2_arr, delt_t * m2_bar[0] / 1e9, label="TM", color="darkorange")
 # ax.plot(n2_arr, mfpt2_simu_arr, "--", label="RW", color="blue",
 #         marker="o", markersize=5.0, markevery=15)
-ax.plot(
-    n2_arr,
-    mfpt2_simu_arr / 1e4,
-    label="RW",
-    color="blue",
-    linestyle='--',
-    linewidth=1.6,
-    marker="o",
-    markersize=4.5,
-    markevery=15
-)
+# ax.plot(
+#     n2_arr,
+#     mfpt2_simu_arr / 1e4,
+#     label="RW",
+#     color="blue",
+#     linestyle='--',
+#     linewidth=1.6,
+#     marker="o",
+#     markersize=4.5,
+#     markevery=15
+# )
 ax.set_xlabel(r"$x$")
-ax.set_ylabel(r"$\tau(x) / 10^4$")
+# ax.set_ylabel(r"$\tau(x)\times 10^9$")
+ax.set_ylabel(r"$\tau(x) / 10^9$")
 # ax.set_ylabel(r"$\tau(x)$")
 # ax.ticklabel_format(axis="y", style="sci", scilimits=(4, 4), useMathText=True)
 format_axes(ax)
 add_legend(ax)
 add_panel_label(ax, "(g)")
-fig.savefig("reguera_MFPT.pdf", bbox_inches="tight")
+fig.savefig("reguera_MFPT_high.pdf", bbox_inches="tight")
 plt.show()
 plt.close(fig)
 
@@ -166,7 +167,16 @@ trans_beta_Grec_arr = reconstruct_energy_ra(
     Pst_arr=ira2_trans.steady_state,
     mfpt_arr=m2_bar[0]
 )
-simu_beta_Grec_arr = np.load("data/reguera_reconst_n2.npy")
+# simu_beta_Grec_arr = np.load("data/reguera_reconst_n2.npy")
+
+
+# Save numerical data for diagnostics
+tau_steps = np.asarray(m2_bar[0], dtype=float)
+tau_time = delt_t * tau_steps
+Pst = np.asarray(ira2_trans.steady_state, dtype=float)
+model_U = beta_U(x2_arr)
+reconst_U = np.asarray(trans_beta_Grec_arr, dtype=float)
+
 
 # (d) Reconstructed free energy
 fig, ax = plt.subplots(figsize=(3.3, 2.75), constrained_layout=True)
@@ -176,22 +186,22 @@ ax.plot(x2_arr[1:-1], trans_beta_Grec_arr, ":",
         label="TM", color="darkorange")
 # ax.plot(n2_arr[1:-1], simu_beta_Grec_arr, "--",
 #         label="RW", color="blue", marker="o", markersize=5.0, markevery=15)
-ax.plot(
-    n2_arr[1:-1],
-    simu_beta_Grec_arr,
-    label="RW",
-    color="blue",
-    linestyle='--',
-    linewidth=1.6,
-    marker="o",
-    markersize=4.5,
-    markevery=15
-)
+# ax.plot(
+#     n2_arr[1:-1],
+#     simu_beta_Grec_arr,
+#     label="RW",
+#     color="blue",
+#     linestyle='--',
+#     linewidth=1.6,
+#     marker="o",
+#     markersize=4.5,
+#     markevery=15
+# )
 ax.set_xlabel(r"$x$")
 ax.set_ylabel(r"$\beta U(x)$")
 format_axes(ax)
 add_legend(ax)
 add_panel_label(ax, "(h)")
-fig.savefig("reguera_reconst.pdf", bbox_inches="tight")
+fig.savefig("reguera_reconst_high.pdf", bbox_inches="tight")
 plt.show()
 plt.close(fig)

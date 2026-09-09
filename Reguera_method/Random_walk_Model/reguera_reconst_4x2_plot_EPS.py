@@ -117,7 +117,7 @@ ax.plot(n2_arr, mfpt2_simu_arr / 1e4, label="RW", color="blue",
         linestyle="--", linewidth=1.6,
         marker="o", markersize=4.5, markevery=15)
 ax.set_xlabel(r"$x$")
-ax.set_ylabel(r"$\tau(x)\times 10^4 $")
+ax.set_ylabel(r"$\tau(x) / 10^4 $")
 format_axes(ax)
 add_legend(ax)
 add_panel_label(ax, "(g)")
